@@ -26,9 +26,9 @@ For example, this pipeline can be used to create the build image that can be use
 The following resources are created:
 - An ECR reposetory to store the built images
 - An ImageBuilder recipe that includes the following componenets:
-- - install git
-- - install nodejs
-- - install docker
+    - install git
+    - install nodejs
+    - install docker
 - instance profile for ImageBuilder build instance
 - Infrastructure configuration to tell ImageBuilder which infra to use for the pipeline
 - Distribution configuration to tell ImageBuilder to use the ECR repo as the destination for resulting images

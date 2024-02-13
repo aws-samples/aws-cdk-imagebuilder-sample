@@ -12,8 +12,8 @@ export class ImagebuilderStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // Create ImageBuilder componenet that will handle installing git in the base container image
-    const gitComponenet = new imagebuilder.CfnComponent(this, "GitComponenet", {
+    // Create ImageBuilder Component that will handle installing git in the base container image
+    const gitComponent = new imagebuilder.CfnComponent(this, "GitComponent", {
       // Prefix compoenet name with stake name for inter-environment uniqueness
       name: this.stackName + '-' + "Git",
       platform: "Linux",
@@ -24,8 +24,8 @@ export class ImagebuilderStack extends cdk.Stack {
         )
     });
     
-    // Create ImageBuilder componenet that will handle installing NodeJS in the base container image
-    const nodejsComponenet = new imagebuilder.CfnComponent(this, "NodejsComponenet", {
+    // Create ImageBuilder Component that will handle installing NodeJS in the base container image
+    const nodejsComponent = new imagebuilder.CfnComponent(this, "NodejsComponent", {
       // Prefix compoenet name with stake name for inter-environment uniqueness
       name: this.stackName + '-' + "Nodejs",
       platform: "Linux",
@@ -36,8 +36,8 @@ export class ImagebuilderStack extends cdk.Stack {
         )
     });
     
-    // Create ImageBuilder componenet that will handle installing Docker in the base container image
-    const dockerComponenet = new imagebuilder.CfnComponent(this, "DockerComponenet", {
+    // Create ImageBuilder Component that will handle installing Docker in the base container image
+    const dockerComponent = new imagebuilder.CfnComponent(this, "DockerComponent", {
       // Prefix compoenet name with stake name for inter-environment uniqueness
       name: this.stackName + '-' + "Docker",
       platform: "Linux",
@@ -55,13 +55,13 @@ export class ImagebuilderStack extends cdk.Stack {
     const AmazonLinux2023wGitNodeRecipe = new imagebuilder.CfnContainerRecipe(this, "AmazonLinux2023withGitAndNodeRecipe", {
       components: [
         {
-          componentArn : gitComponenet.attrArn,
+          componentArn : gitComponent.attrArn,
         },
         {
-          componentArn : nodejsComponenet.attrArn,
+          componentArn : nodejsComponent.attrArn,
         },
         {
-          componentArn : dockerComponenet.attrArn,
+          componentArn : dockerComponent.attrArn,
         }
       ],
       containerType: "DOCKER",
