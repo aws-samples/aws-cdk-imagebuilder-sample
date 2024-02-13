@@ -14,7 +14,7 @@ export class ImagebuilderStack extends cdk.Stack {
 
     // Create ImageBuilder Component that will handle installing git in the base container image
     const gitComponent = new imagebuilder.CfnComponent(this, "GitComponent", {
-      // Prefix compoenet name with stake name for inter-environment uniqueness
+      // Prefix component name with stake name for inter-environment uniqueness
       name: this.stackName + '-' + "Git",
       platform: "Linux",
       version: "1.0.0",
@@ -26,7 +26,7 @@ export class ImagebuilderStack extends cdk.Stack {
     
     // Create ImageBuilder Component that will handle installing NodeJS in the base container image
     const nodejsComponent = new imagebuilder.CfnComponent(this, "NodejsComponent", {
-      // Prefix compoenet name with stake name for inter-environment uniqueness
+      // Prefix component name with stake name for inter-environment uniqueness
       name: this.stackName + '-' + "Nodejs",
       platform: "Linux",
       version: "1.0.0",
@@ -38,10 +38,10 @@ export class ImagebuilderStack extends cdk.Stack {
     
     // Create ImageBuilder Component that will handle installing Docker in the base container image
     const dockerComponent = new imagebuilder.CfnComponent(this, "DockerComponent", {
-      // Prefix compoenet name with stake name for inter-environment uniqueness
+      // Prefix component name with stake name for inter-environment uniqueness
       name: this.stackName + '-' + "Docker",
       platform: "Linux",
-      version: "1.0.2",
+      version: "1.0.0",
       data: fs.readFileSync(
           path.resolve('bin/imagebuilder-components/docker.yaml'),
           'utf8'
@@ -49,9 +49,14 @@ export class ImagebuilderStack extends cdk.Stack {
     });
     
     // Create the Amazon Elastic Container Registry repository that will host the resulting image(s)
-    const ecrRepoForImageBuilderCodeCatalyst = new ecr.Repository(this, "EcrRepoForImageBuilderCodeCatalyst")
+    const ecrRepoForImageBuilderCodeCatalyst = new ecr.Repository(this, "EcrRepoForImageBuilderCodeCatalyst", {
+      // Explicitly set encryption as enabled (default)
+      encryption: ecr.RepositoryEncryption.AES_256,
+      // Optional: Can set encryption to KMS and select a customer encryption key
+      // encryptionKey: <IKey>
+    })
     
-    // Create an ImageBuilder recipe that contains the 3 compoenets
+    // Create an ImageBuilder recipe that contains the 3 components
     const AmazonLinux2023wGitNodeRecipe = new imagebuilder.CfnContainerRecipe(this, "AmazonLinux2023withGitAndNodeRecipe", {
       components: [
         {
@@ -75,7 +80,7 @@ export class ImagebuilderStack extends cdk.Stack {
         repositoryName: ecrRepoForImageBuilderCodeCatalyst.repositoryName,
         service : "ECR"
       },
-      version: "2.1.2"
+      version: "1.0.0"
     })
     
     // Create an IAM role for ImageBuilder EC2 build instances, that has the needed AWS Managed policies
