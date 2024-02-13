@@ -11,6 +11,8 @@
 ---
 <!--END STABILITY BANNER-->
 
+![AWS Sample Architecture showing AWS ImageBuilder service provisioning a build pipeline that reads a base container image (Amazon Linux 2023) and then installs Git, NodeJS and Docker, then saves the resulting image in an Amazon ECR repository.](imagebuilder-sample-arch.drawio.png "AWS Sample Architecture")
+
 ## Overview
 
 This AWS Cloud Development Kit (CDK) TypeScript example demonstrates how to create a fully functional ImageBuilder pipeline that builds an Amazon Linux 2023 container image, installing git, docker and nodejs, all the way to pushing the resulting image to an ECR repository.
